@@ -1,0 +1,13 @@
+{
+    "file": "yaff.entitybuilder",
+    "es5Entry": "./index.js",
+    "esmEntry": "./index.js",
+    "docs": {
+        "files":[
+            "build.js",
+            "knownCtors.js",
+            "builderConfig.js",
+            "buildOptions.js"
+        ]
+    }
+}

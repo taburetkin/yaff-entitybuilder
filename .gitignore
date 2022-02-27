@@ -1,0 +1,6 @@
+.coverage/
+.nyc_output/
+lib/index.html
+node_modules/
+sandbox/
+yarn.lock

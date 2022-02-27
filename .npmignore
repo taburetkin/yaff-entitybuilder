@@ -1,0 +1,14 @@
+.coverage/
+.nyc_output/
+.vscode/
+node_modules/
+sandbox/
+test/
+tooling/
+.babelrc
+.eslintrc
+.gitignore
+.eslintignore
+yarn.lock
+yarn-error.log
+index-es5-umd.js

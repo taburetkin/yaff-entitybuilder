@@ -1,0 +1,9 @@
+{
+	"checkLeaks": true,
+	"file": "./test/setup.raw.js",
+	"recursive": true,
+	"reporter": "dot",
+	"require": ["module-alias/register", "@babel/register"],
+	"spec": "./test/unit/",
+	"ui": "bdd"
+}
