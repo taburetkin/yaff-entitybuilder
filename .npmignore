@@ -9,6 +9,12 @@ tooling/
 .eslintignore
 .eslintrc
 .gitignore
+build.js
+builderConfig.js
+buildOptions.js
+index.js
+knownCtors.js
+utils.js
 lib.config.json
 yarn-error.log
 yarn.lock
