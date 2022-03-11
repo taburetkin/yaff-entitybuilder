@@ -1,6 +1,6 @@
 {
 	"name": "yaff-entitybuilder",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"description": "javascript small tool for constructing an entity",
 	"browser": "lib/entitybuilder.es5.umd.js",
 	"main": "lib/entitybuilder.esm.js",

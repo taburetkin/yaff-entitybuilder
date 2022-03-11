@@ -23,7 +23,6 @@ export const debounce = function(func, wait, immediate) {
 			timeout = setTimeout(later, wait);
 			if (callNow) {
 				result = func.apply(this, args);
-				console.log('called immediate');
 			}
 		} else {
 			timeout = setTimeout(() => later(this, args), wait);

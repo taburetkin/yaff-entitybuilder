@@ -23,7 +23,6 @@ export const knownCtors = [
 ];
 
 function _remove(ctor, index) {
-    //console.log('-rem-', index);
     if (index == null)
         index = knownCtors.indexOf(ctor);
     if (index > -1) {

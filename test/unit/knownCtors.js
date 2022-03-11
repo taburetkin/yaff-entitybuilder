@@ -10,13 +10,11 @@ describe('knownCtor API', function() {
 
     this.beforeAll(function() {
         defCtors = knownCtors.slice();
-        //console.log('- spliced -', defCtors.length);
     });
 
     this.afterEach(function() {
         knownCtors.length = 0;
         knownCtors.push(...defCtors);
-        //console.log('- returned -', knownCtors.length);
     });
 
     describe('isKnownCtor', function() {
