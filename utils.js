@@ -1,7 +1,7 @@
 import { isKnownCtor } from "./knownCtors.js";
 
+// comented because of babel transpile
 // export function isClassFunction(arg, functionToo) {
-//     console.log('-isclass-', arg, arg.toString(), functionToo);
 //     if (arg != null && typeof arg === 'function') {
 //         let text = arg.toString();
 //         if (text.startsWith('class')) {
@@ -14,13 +14,14 @@ import { isKnownCtor } from "./knownCtors.js";
 // }
 
 export function isClassFunction(arg, functionToo) {
-    //console.log('-isclass-', arg && arg.toString());
     // this function was made to test is provided argument is a function AND can be used with `new` keyword
     // but because of babel transpile downgraded to only function check
     // basicaly this should exclude arrow function by default and usual function with `functionToo` true
     return typeof arg === 'function';
 }
 
+// trying to convert given arg to { class: ..., ... }
+// can handle arg: Class, () => Class, 
 export function normalizeBuildOptions(arg, invokeArgs = [], invokeContext) {
     if (arg == null) return;
 
@@ -43,6 +44,7 @@ export function normalizeBuildOptions(arg, invokeArgs = [], invokeContext) {
         return arg;
 }
 
+// build options must have `class` property with constructor in it
 export function ensureBuildOptions(options, shouldThrow)
 {
     if (!options || typeof options.class !== 'function') {
@@ -54,6 +56,8 @@ export function ensureBuildOptions(options, shouldThrow)
     return true;
 }
 
+// clone object and omit rest properties
+// cloneObject(obj, 'property1', 'property2', ...) - will omit property1 and property2 in new object
 export function cloneObject(obj) {
     if (obj == null) return;
     if (typeof obj !== 'object') return obj;

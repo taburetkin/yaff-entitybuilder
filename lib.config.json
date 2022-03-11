@@ -1,5 +1,5 @@
 {
-    "file": "yaff.entitybuilder",
+    "file": "entitybuilder",
     "es5Entry": "./index.js",
     "esmEntry": "./index.js",
     "docs": {

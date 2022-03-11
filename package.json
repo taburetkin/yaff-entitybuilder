@@ -1,9 +1,11 @@
 {
 	"name": "yaff-entitybuilder",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "javascript small tool for constructing an entity",
-	"main": "index.js",
-	"module": "index.js",
+	"browser": "lib/entitybuilder.es5.umd.js",
+	"main": "lib/entitybuilder.esm.js",
+	"module": "lib/entitybuilder.esm.js",
+	"jsnext:main": "lib/entitybuilder.esm.js",
 	"author": "dimtabu <dima.taburetkin@gmail.com>",
 	"license": "MIT",
 	"scripts": {

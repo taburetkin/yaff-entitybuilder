@@ -126,4 +126,82 @@ the class sid
 String
 ```
 
+# API
+```js
+import { 
+    isKnownCtor, removeKnownCtor, addKnownCtor, isKnownCtorInstance
+    builderConfig 
+    build 
+} from 'yaff-builder';
+```
+## build(arg[, invokeArgs, invokeContext])
+**arg**  *(required)* - buildOptions object or function returned buildOptions.  
+**invokeArgs** *(optional)* - for case when `arg` is a function.  
+**invokeContext**  *(optional)* - for case when `arg` is a function.  
+Builds entity with given arguments and returns the instance. 
+In case when first argument is a function it will be invoked with given invoke arguments and context:  
+`build(someFunc, [arg1, arg2], someContext)` = `build(someFunc.apply(someContext, [arg1, arg2]))`
+
+### buildOptions object
+```js
+{    
+    class: function, required
+    ctorArguments: [...] optional
+    <...>
+}
+```
+#### single argument case: **`new MyClass(options)`**
+variant 1: without ctorArguments property
+```
+let buildOptions = {
+    class: MyClass,
+    property1: 'foo',
+    property2: 'bar',
+    ...
+    propertyN: '...'
+}
+```
+`options` will get all properties except `class`: 
+```
+{ 
+    property1: 'foo',
+    property2: 'bar',
+    ...
+    propertyN: '...'
+}
+```
+variant 2, strict definition
+```
+{
+    class:MyClass,
+    ctorArguments: [
+        {
+            property1: 'foo',
+            property2: 'bar',
+            ...
+            propertyN: '...'
+        }
+    ]
+}
+```
+
+
+## builderConfig 
+**shouldThrow**: boolean, default: false
+Defines the behavior of `build()` for wrong arguments.
+
+## isKnownCtor(arg)
+Checks if given argument is one of known constructors
+
+## removeKnownCtor(arg, inherited)
+Removes ctor from known constructors.
+
+## addKnownCtor(arg)
+Adds given argument to known constructors array
+
+## isKnownCtorInstance(arg)
+Checks if given argument is instance of any known constructors
+
+----
+
 For more details check reference.md

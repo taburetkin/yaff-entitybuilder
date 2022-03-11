@@ -6,9 +6,9 @@ sandbox/
 test/
 tooling/
 .babelrc
+.eslintignore
 .eslintrc
 .gitignore
-.eslintignore
-yarn.lock
+lib.config.json
 yarn-error.log
-index-es5-umd.js
+yarn.lock
