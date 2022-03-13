@@ -33,6 +33,7 @@ describe('utils', function() {
         });
 
     });
+
     describe('ensureBuildOptions', function() {
 
         it('should return false if given arg is not an object', function() {
@@ -59,121 +60,108 @@ describe('utils', function() {
             expect(val).to.be.equal(true);
         });
     });
+
     describe('normalizeBuildOptions', function() {
 
-        describe('negative returns', function() {
-            it('return undefined if arg is not an object or function', function() {
-                let val1 = normalizeBuildOptions();
-                let val2 = normalizeBuildOptions(null);
-                let val3 = normalizeBuildOptions('foo');
-                expect(val1).to.be.undefined;
-                expect(val2).to.be.undefined;
-                expect(val3).to.be.undefined;
-            });
-            it('return undefined if given arg is an object without filled class property', function() {
-                let val1 = normalizeBuildOptions({});
-                expect(val1).to.be.undefined;
+        function isPositiveReturn(value, funcWrap)
+        {
+            let { classType, options, valueToNormalize } = prepareArgs(value, funcWrap);
+            let normalized = normalizeBuildOptions(valueToNormalize);
+            makeExpectations(normalized, classType, options);
+        }
 
-                let val2 = normalizeBuildOptions({ class: 'foo' });
-                expect(val2).to.be.undefined;
+        function prepareArgs(valueToNormalize, funcWrap) {
+            let classType;
+            let options;
+            let arg;
 
-                // disabled because of babel transpile
-                // let val3 = normalizeBuildOptions({ class: () => {} });
-                // expect(val3).to.be.undefined;
-            });
-            it('return undefined if arg is a function returned not an object or object without class property', function() {
-                let val1 = normalizeBuildOptions(() => 'foo');
-                expect(val1).to.be.undefined;
-                let val2 = normalizeBuildOptions(() => ({ class: 'foo' }));
-                expect(val2).to.be.undefined;
+            if (funcWrap) {
+                arg = valueToNormalize();
+                valueToNormalize = () => arg;
+            } else {
+                arg = valueToNormalize;
+            }
 
-                // disabled because of babel transpile
-                // let val3 = normalizeBuildOptions(() => ({ class: () => {} }));
-                // expect(val3).to.be.undefined;
-            });
+            if (typeof arg === 'function') {
+                classType = arg;
+            } else {
+                options = arg;
+                classType = options.class;
+            }
+            
+            return { classType, options, valueToNormalize };
+        }
+
+        function makeExpectations(returnedValue, classType, options)
+        {
+            expect(returnedValue).to.be.a('object');
+            expect(returnedValue).has.property('class').equal(classType);
+            if (options) {
+                expect(returnedValue).to.be.equal(options);
+            }
+        }
+
+
+        it('return undefined if arg is nullable or is not an object', function() {
+
+            let val = normalizeBuildOptions();
+            expect(val).to.be.undefined;
+
+            val = normalizeBuildOptions(null);
+            expect(val).to.be.undefined;
+
+            val = normalizeBuildOptions(() => null);
+            expect(val).to.be.undefined;
+
+            val = normalizeBuildOptions('null');
+            expect(val).to.be.undefined;
+
+            val = normalizeBuildOptions(() => 'null');
+            expect(val).to.be.undefined;
+        });            
+
+        it('should return given arg if its an object', function() {
+            let obj = {};
+            let val1 = normalizeBuildOptions(obj);
+            let val2 = normalizeBuildOptions(() => obj);
+            expect(val1).to.be.equal(obj);
+            expect(val2).to.be.equal(obj);
         });
 
+        it('should return arg if given arg is an object with function in a class property', function() {
 
-        describe('positive returns', function() {
-
-
-
-            function isPositiveReturn(value, funcWrap)
-            {
-                let { classType, options, valueToNormalize } = prepareArgs(value, funcWrap);
-                let normalized = normalizeBuildOptions(valueToNormalize);
-                makeExpectations(normalized, classType, options);
-            }
-
-            function prepareArgs(valueToNormalize, funcWrap) {
-                let classType;
-                let options;
-                let arg;
-
-                if (funcWrap) {
-                    arg = valueToNormalize();
-                    valueToNormalize = () => arg;
-                } else {
-                    arg = valueToNormalize;
-                }
-
-                if (typeof arg === 'function') {
-                    classType = arg;
-                } else {
-                    options = arg;
-                    classType = options.class;
-                }
-                
-                return { classType, options, valueToNormalize };
-            }
-
-            function makeExpectations(returnedValue, classType, options)
-            {
-                expect(returnedValue).to.be.a('object');
-                expect(returnedValue).has.property('class').equal(classType);
-                if (options) {
-                    expect(returnedValue).to.be.equal(options);
-                }
-            }
-
-            it('should return arg if given arg is an object with function in a class property', function() {
-
-                isPositiveReturn({ 
-                    class: function(){}
-                });
-
-                isPositiveReturn({ 
-                    class: class{}
-                });
-
+            isPositiveReturn({ 
+                class: function(){}
             });
 
-            it('should return object { class: Ctor } if arg is ctor', function() {
-
-                isPositiveReturn(String);
-
-            });
-
-            it('should return object { class: Ctor } if arg is a function returning Ctor', function() {
-
-                isPositiveReturn(() => String, true);
-                // let val = normalizeBuildOptions(() => String);
-                // expect(val).to.be.a('object');
-                // expect(val).has.property('class').equal(String);
-            });
-
-            it('should return invoked arg if given arg is a function which returns an object with function in a class property', function() {
-
-                isPositiveReturn(() => ({ class: function(){ } }), true); 
-
-                // let test = { class: function(){ } };
-                // let val = normalizeBuildOptions(() => test);
-                // expect(val).is.equal(test);
+            isPositiveReturn({ 
+                class: class{}
             });
 
         });
 
+        it('should return object { class: Ctor } if arg is ctor', function() {
 
+            isPositiveReturn(String);
+
+        });
+
+        it('should return object { class: Ctor } if arg is a function returning Ctor', function() {
+
+            isPositiveReturn(() => String, true);
+            // let val = normalizeBuildOptions(() => String);
+            // expect(val).to.be.a('object');
+            // expect(val).has.property('class').equal(String);
+        });
+
+        it('should return invoked arg if given arg is a function which returns an object with function in a class property', function() {
+
+            isPositiveReturn(() => ({ class: function(){ } }), true); 
+
+            // let test = { class: function(){ } };
+            // let val = normalizeBuildOptions(() => test);
+            // expect(val).is.equal(test);
+        });
 
      
     });

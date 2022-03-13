@@ -24,7 +24,7 @@ function isBuildOptions(arg) {
     return arg && isClassFunction(arg.class, true);
 }
 
-//const emptyArr = [];
+
 // trying to convert given arg to { class: ..., ... }
 // can handle arg: Class, () => Class, 
 export function normalizeBuildOptions(arg, invokeArgs, invokeContext) {
@@ -37,18 +37,26 @@ export function normalizeBuildOptions(arg, invokeArgs, invokeContext) {
 
     arg = invokeValue(arg, invokeArgs, invokeContext);
 
-    if (isKnownCtor(arg)) {
+    if (arg == null) {
+
+        return;
+
+    } else if (isKnownCtor(arg)) {
+
         return { class: arg };
-    } else if (isBuildOptions(arg)) {
+
+    } else if (typeof arg === 'object') {
+
         return arg;
+
     }
-    
+
 }
 
 // build options must have `class` property with constructor in it
 export function ensureBuildOptions(options, shouldThrow)
 {
-    if (!options || typeof options.class !== 'function') {
+    if (!isBuildOptions(options)) {
         if (shouldThrow)
             throw new Error('provided buildOptions is not an object or does not have `entityClass` property');
         else
