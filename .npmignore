@@ -13,6 +13,7 @@ build.js
 builderConfig.js
 buildOptions.js
 index.js
+invokeValue.js
 knownCtors.js
 utils.js
 lib.config.json
