@@ -7,7 +7,6 @@
             "build.js",            
             "knownCtors.js",
             "builderConfig.js",
-            "buildOptions.js",
             "invokeValue.js"
         ]
     }

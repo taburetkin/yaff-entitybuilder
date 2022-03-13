@@ -20,23 +20,29 @@ export function isClassFunction(arg, functionToo) {
     return typeof arg === 'function';
 }
 
+function isBuildOptions(arg) {
+    return arg && isClassFunction(arg.class, true);
+}
+
 //const emptyArr = [];
 // trying to convert given arg to { class: ..., ... }
 // can handle arg: Class, () => Class, 
 export function normalizeBuildOptions(arg, invokeArgs, invokeContext) {
 
-    if (arg == null) return;
+    if (arg == null) {
+        return;
+    } else if (isBuildOptions(arg)) {
+        return arg;
+    }
 
     arg = invokeValue(arg, invokeArgs, invokeContext);
 
     if (isKnownCtor(arg)) {
         return { class: arg };
+    } else if (isBuildOptions(arg)) {
+        return arg;
     }
     
-    let type = typeof arg;
-
-    if (type === 'object' && isClassFunction(arg.class, true))
-        return arg;
 }
 
 // build options must have `class` property with constructor in it

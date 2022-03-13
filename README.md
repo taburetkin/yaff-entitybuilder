@@ -131,7 +131,7 @@ String
 import { 
     isKnownCtor, removeKnownCtor, addKnownCtor, isKnownCtorInstance
     builderConfig 
-    build,
+    build, normalizeBuildOptions
     invokeValue 
 } from 'yaff-builder';
 ```
@@ -192,6 +192,9 @@ variant 2, strict definition
 ## builderConfig 
 **shouldThrow**: boolean, default: false  
 Defines the behavior of `build()` for wrong arguments.  
+
+## normalizeBuildOptions(arg, invokeArgs, invokeContext)
+Tries to normalize given argument to `buildOptions`. If fails will return `undefined`.
 
 ## invokeValue(value, invokeArgs, invokeContext)
 Invokes value with provided invokeArgs and invokeContext and return its value in case if its a function and not one of knownCtors otherwise returns value as is.
