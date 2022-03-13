@@ -1,20 +1,20 @@
-/**
- * Known Ctors array
- * holds class definitions for determine should builder invoke provided function to extract result or not in case its a registered class definition
- * @example
- * let test1 = String;
- * let test2 = () => {};
- * isKnownCtor(test1) // true
- * isKnownCtor(test2) // false
- * 
- * //example invoke function:
- * function invoke(arg, invokeArgs = [], invokeContext) {
- *   if (typeof arg === 'function' && !isKnownCtor(arg)) {
- *     arg = arg.apply(invokeContext, invokeArgs);
- *   }
- *   return arg;
- * }
- */
+// /**
+//  * Known Ctors array
+//  * holds class definitions for determine should builder invoke provided function to extract result or not in case its a registered class definition
+//  * @example
+//  * let test1 = String;
+//  * let test2 = () => {};
+//  * isKnownCtor(test1) // true
+//  * isKnownCtor(test2) // false
+//  * 
+//  * //example invoke function:
+//  * function invoke(arg, invokeArgs = [], invokeContext) {
+//  *   if (typeof arg === 'function' && !isKnownCtor(arg)) {
+//  *     arg = arg.apply(invokeContext, invokeArgs);
+//  *   }
+//  *   return arg;
+//  * }
+//  */
 export const knownCtors = [
     String,
     Number,
@@ -70,7 +70,7 @@ function _instanceOfCtor(ctor, index, arg, isBase) {
 /**
  * Removes provided class definition from `known ctors` array
  * @param {func} ctor - Class to remove
- * @param {boolean} inherited - false: will remove exactly provided class, true: will remove any one inherited or exactly provided
+ * @param {boolean} [inherited] - false: will remove exactly provided class, true: will remove any one inherited or exactly provided
  * @returns undefined if Class was not found, Class if Class was removed
  * @example 
  * 
@@ -96,7 +96,7 @@ export function removeKnownCtor(ctor, inherited) {
 
 /**
  * Adds provided class definition to `known ctors` array
- * @param {func} arg 
+ * @param {function} arg 
  * @returns arg on success, undefined on fail
  */
 export function addKnownCtor(arg) {
@@ -109,7 +109,7 @@ export function addKnownCtor(arg) {
 
 /**
  * Checks if a given arguments is any of `known ctor`
- * @param {any} arg 
+ * @param {*} arg 
  * @returns true if given argument is known ctor otherwise false
  */
 export function isKnownCtor(arg) {
@@ -120,7 +120,7 @@ export function isKnownCtor(arg) {
 
 /**
  * Checks if a given argument is an instance of any `known ctor`
- * @param {any} arg 
+ * @param {*} arg 
  * @returns true if given argument is instance of known ctor otherwise false
  */
 export function isKnownCtorInstance(arg) {
