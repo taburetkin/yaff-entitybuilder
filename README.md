@@ -131,16 +131,19 @@ String
 import { 
     isKnownCtor, removeKnownCtor, addKnownCtor, isKnownCtorInstance
     builderConfig 
-    build 
+    build,
+    invokeValue 
 } from 'yaff-builder';
 ```
 ## build(arg[, invokeArgs, invokeContext])
 **arg**  *(required)* - buildOptions object or function returned buildOptions.  
-**invokeArgs** *(optional)* - for case when `arg` is a function.  
-**invokeContext**  *(optional)* - for case when `arg` is a function.  
-Builds entity with given arguments and returns the instance. 
-In case when first argument is a function it will be invoked with given invoke arguments and context:  
-`build(someFunc, [arg1, arg2], someContext)` = `build(someFunc.apply(someContext, [arg1, arg2]))`
+**invokeArgs** *(optional)* - for case when `arg` is a function, see `invokeValue`.  
+**invokeContext**  *(optional)* - for case when `arg` is a function, see `invokeValue`.  
+
+Builds entity from buildOptions object. see `buildOptions`  
+In case when first argument is a function it will be invoked with given invoke arguments and context. see `invokeValue`
+
+For examples check reference.md
 
 ### buildOptions object
 ```js
@@ -187,20 +190,29 @@ variant 2, strict definition
 
 
 ## builderConfig 
-**shouldThrow**: boolean, default: false
-Defines the behavior of `build()` for wrong arguments.
+**shouldThrow**: boolean, default: false  
+Defines the behavior of `build()` for wrong arguments.  
+
+## invokeValue(value, invokeArgs, invokeContext)
+Invokes value with provided invokeArgs and invokeContext and return its value in case if its a function and not one of knownCtors otherwise returns value as is.
+```js
+invokeValue(String); // String
+invokeValue(() => 'foo'); // foo
+```
+for more details check reference.md.
+
 
 ## isKnownCtor(arg)
-Checks if given argument is one of known constructors
+Checks if given argument is one of known constructors  
 
 ## removeKnownCtor(arg, inherited)
-Removes ctor from known constructors.
+Removes ctor from known constructors.  
 
 ## addKnownCtor(arg)
-Adds given argument to known constructors array
+Adds given argument to known constructors array.  
 
 ## isKnownCtorInstance(arg)
-Checks if given argument is instance of any known constructors
+Checks if given argument is instance of any known constructors.  
 
 ----
 
