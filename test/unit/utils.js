@@ -2,6 +2,7 @@ import { expect } from "chai";
 import { cloneObject, ensureBuildOptions, normalizeBuildOptions } from "../../utils";
 
 describe('utils', function() {
+
     describe('cloneObject', function() {
         it('should return undefined without arguments', function() {
             let val = cloneObject();
@@ -69,7 +70,6 @@ describe('utils', function() {
                 expect(val2).to.be.undefined;
                 expect(val3).to.be.undefined;
             });
-    
             it('return undefined if given arg is an object without filled class property', function() {
                 let val1 = normalizeBuildOptions({});
                 expect(val1).to.be.undefined;
@@ -81,8 +81,6 @@ describe('utils', function() {
                 // let val3 = normalizeBuildOptions({ class: () => {} });
                 // expect(val3).to.be.undefined;
             });
-            
-            
             it('return undefined if arg is a function returned not an object or object without class property', function() {
                 let val1 = normalizeBuildOptions(() => 'foo');
                 expect(val1).to.be.undefined;
@@ -172,6 +170,7 @@ describe('utils', function() {
                 // let val = normalizeBuildOptions(() => test);
                 // expect(val).is.equal(test);
             });
+
         });
 
 

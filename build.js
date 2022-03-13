@@ -4,10 +4,10 @@ import { isKnownCtorInstance } from './knownCtors';
 import { normalizeBuildOptions, ensureBuildOptions, cloneObject } from './utils.js';
 
 /**
- * Builds an entity from provided buildOptions
+ * Builds an entity from provided buildOptions, if given value is a function it will be invoked with provided invokeArgs and invokeContext, see: `invokeValue`
  * @param {object|func} arg  - buildOptions obj (@see buildOptions.js) or function returned BuildOptions or Class definition
- * @param {array} invokeArgs - optional, arguments for invoke function arg
- * @param {obj} invokeContext - optional, context for invoke function arg
+ * @param {any} invokeArgs - optional, arguments for invoke function arg, see `invokeValue`
+ * @param {obj} invokeContext - optional, context for invoke function arg, see `invokeValue`
  * @returns entity instance or undefined
  */
 export function build(arg, invokeArgs, invokeContext) {

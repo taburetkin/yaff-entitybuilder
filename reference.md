@@ -22,7 +22,7 @@ holds class definitions for determine should builder invoke provided function to
 
 <dl>
 <dt><a href="#build">build(arg, invokeArgs, invokeContext)</a> ⇒</dt>
-<dd><p>Builds an entity from provided buildOptions</p>
+<dd><p>Builds an entity from provided buildOptions, if fiven value is a function it will be invoked with provided invokeArgs and invokeContext, see: <code>invokeValue</code></p>
 </dd>
 <dt><a href="#removeKnownCtor">removeKnownCtor(ctor, inherited)</a> ⇒</dt>
 <dd><p>Removes provided class definition from <code>known ctors</code> array</p>
@@ -35,6 +35,9 @@ holds class definitions for determine should builder invoke provided function to
 </dd>
 <dt><a href="#isKnownCtorInstance">isKnownCtorInstance(arg)</a> ⇒</dt>
 <dd><p>Checks if a given argument is an instance of any <code>known ctor</code></p>
+</dd>
+<dt><a href="#invokeValue">invokeValue(value, invokeArgs, invokeContext)</a> ⇒</dt>
+<dd><p>Invokes value and return invoked value if value is a function and not one of known ctors.</p>
 </dd>
 </dl>
 
@@ -81,34 +84,22 @@ Build options.
   option2: 'bar'
 }
 => new MyClass('abc', 'qwe')
-note: in multi argument behavior any properties except `class` and `ctorArguments` will be ignored
+note: in multi argument behavior any properties except `class` and `ctorArguments` will be ignnored
 ```
 <a name="knownCtors"></a>
 
 ## knownCtors
-Known Ctors array
-holds class definitions for determine should builder invoke provided function to extract result or not in case its a registered class definition
+Known Ctors arrayholds class definitions for determine should builder invoke provided function to extract result or not in case its a registered class definition
 
 **Kind**: global constant  
 **Example**  
 ```js
-let test1 = String;
-let test2 = () => {};
-isKnownCtor(test1) // true
-isKnownCtor(test2) // false
-
-//example invoke function:
-function invoke(arg, invokeArgs = [], invokeContext) {
-  if (typeof arg === 'function' && !isKnownCtor(arg)) {
-    arg = arg.apply(invokeContext, invokeArgs);
-  }
-  return arg;
-}
+let test1 = String;let test2 = () => {};isKnownCtor(test1) // trueisKnownCtor(test2) // false//example invoke function:function invoke(arg, invokeArgs = [], invokeContext) {  if (typeof arg === 'function' && !isKnownCtor(arg)) {    arg = arg.apply(invokeContext, invokeArgs);  }  return arg;}
 ```
 <a name="build"></a>
 
 ## build(arg, invokeArgs, invokeContext) ⇒
-Builds an entity from provided buildOptions
+Builds an entity from provided buildOptions, if fiven value is a function it will be invoked with provided invokeArgs and invokeContext, see: `invokeValue`
 
 **Kind**: global function  
 **Returns**: entity instance or undefined  
@@ -116,8 +107,8 @@ Builds an entity from provided buildOptions
 | Param | Type | Description |
 | --- | --- | --- |
 | arg | <code>object</code> \| <code>func</code> | buildOptions obj (@see buildOptions.js) or function returned BuildOptions or Class definition |
-| invokeArgs | <code>array</code> | optional, arguments for invoke function arg |
-| invokeContext | <code>obj</code> | optional, context for invoke function arg |
+| invokeArgs | <code>array</code> | optional, arguments for invoke function arg, see `invokeValue` |
+| invokeContext | <code>obj</code> | optional, context for invoke function arg, see `invokeValue` |
 
 <a name="removeKnownCtor"></a>
 
@@ -134,16 +125,7 @@ Removes provided class definition from `known ctors` array
 
 **Example**  
 ```js
-class MyClass {}
-// add class definition to known ctors
-addKnownCtor(MyClass);
-
-isKnwonCtor(MyClass); // true;
-
-// remove class definition from known ctors
-removeKnowCtor(MyClass);
-
-isKnwonCtor(MyClass); // false;
+class MyClass {}// add class definition to known ctorsaddKnownCtor(MyClass);isKnwonCtor(MyClass); // true;// remove class definition from known ctorsremoveKnowCtor(MyClass);isKnwonCtor(MyClass); // false;
 ```
 <a name="addKnownCtor"></a>
 
@@ -181,3 +163,21 @@ Checks if a given argument is an instance of any `known ctor`
 | --- | --- |
 | arg | <code>any</code> | 
 
+<a name="invokeValue"></a>
+
+## invokeValue(value, invokeArgs, invokeContext) ⇒
+Invokes value and return invoked value if value is a function and not one of known ctors.
+
+**Kind**: global function  
+**Returns**: value if its not a function or invoked value  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| value | <code>any</code> |  |
+| invokeArgs | <code>\*</code> | will be used as invoke argument / arguments |
+| invokeContext | <code>\*</code> | will be used as invoke context |
+
+**Example**  
+```js
+invokeValue(value); -> value.call();invokeValue(value, undefined, context); -> value.call(context);invokeValue(value, [], context); -> value.apply(context, []);invokeValue(value, null, context); -> value.call(context, null);invokeValue(value, [null], context); -> value.apply(context, [null]);invokeValue(value, someArg, context); -> value.call(context, someArg);invokeValue(value, someArg); -> value.call(undefined, someArg);
+```

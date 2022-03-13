@@ -8,7 +8,7 @@ module.exports = {
   output: {
     file: `./lib/${cfg.file}.es5.umd.js`,
     format: 'umd',
-    name: 'routing'
+    name: 'YaffEb'
   },
   plugins: [
     commonjs(),

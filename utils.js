@@ -1,5 +1,5 @@
 import { isKnownCtor } from "./knownCtors.js";
-
+import { invokeValue } from './invokeValue';
 // comented because of babel transpile
 // export function isClassFunction(arg, functionToo) {
 //     if (arg != null && typeof arg === 'function') {
@@ -20,25 +20,20 @@ export function isClassFunction(arg, functionToo) {
     return typeof arg === 'function';
 }
 
+//const emptyArr = [];
 // trying to convert given arg to { class: ..., ... }
 // can handle arg: Class, () => Class, 
-export function normalizeBuildOptions(arg, invokeArgs = [], invokeContext) {
+export function normalizeBuildOptions(arg, invokeArgs, invokeContext) {
+
     if (arg == null) return;
 
-    let type = typeof arg;
+    arg = invokeValue(arg, invokeArgs, invokeContext);
 
-    if (type === 'function') {
-        if (isKnownCtor(arg)) {            
-            return { class: arg };
-        }
-        else {
-            return normalizeBuildOptions(
-                arg.apply(invokeContext, invokeArgs),
-                invokeArgs,
-                invokeContext
-            );
-        }
+    if (isKnownCtor(arg)) {
+        return { class: arg };
     }
+    
+    let type = typeof arg;
 
     if (type === 'object' && isClassFunction(arg.class, true))
         return arg;

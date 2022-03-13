@@ -4,10 +4,11 @@
     "esmEntry": "./index.js",
     "docs": {
         "files":[
-            "build.js",
+            "build.js",            
             "knownCtors.js",
             "builderConfig.js",
-            "buildOptions.js"
+            "buildOptions.js",
+            "invokeValue.js"
         ]
     }
 }

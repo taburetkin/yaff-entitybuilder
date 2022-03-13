@@ -1,4 +1,4 @@
-console.log('NYC CONFIG');
+
 module.exports = {
   extends: '@istanbuljs/nyc-config-babel',
   //all: true,
@@ -6,7 +6,8 @@ module.exports = {
     'index.js',
     'build.js',
     'knownCtors.js',
-    'utils.js'
+    'utils.js',
+    'invokeValue.js'
   ],
   // exclude: [
   //   'jsdocs.js',
